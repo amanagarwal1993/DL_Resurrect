@@ -1,0 +1,16 @@
+<table>
+    <li class="index-li">
+        <div class="index-li-num">
+            {{ '%02d' % (loop.index)}}
+        </div>
+        <a href="{{url_for('full_paper', paper_id=paper[1])}}" rel="nofollow">
+            <div class="index-li-text">
+                <h3>{{ paper[0]|e }}</h3>
+                <p><span>Published</span>: March 2014</p>
+            </div>
+        </a>
+        <div class="index-li-img">
+            <img src="{{paper[2]}}">
+        </div>
+    </li>
+</table>

@@ -1,0 +1,573 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    min-width: 1024px;
+    margin: 0px;
+    font-family: "PT Serif", serif;
+    font-weight: 100;
+    text-rendering: optimizeLegibility;
+}
+
+#container {
+    width: 99.5%;
+    max-width: 1400px;
+    margin: 0 auto auto auto;
+    background-color: #FFF;
+}
+
+header {
+    margin: 5px auto 10px auto;
+}
+
+#header-ruler {
+    margin: -10px auto auto auto;
+}
+
+.big_logo {
+    display: inline-block;
+}
+
+.big_logo a {
+    text-decoration: None; color: black;
+    font-size: 28px;
+}
+
+#top_logo {
+    margin: auto;
+}
+
+.big_logo h5 {
+    margin-top: 5px;
+}
+
+.navs {
+    display: inline-block;
+    float: right;
+    margin-top: 15px;
+}
+
+.nav_link {
+    margin: 0 5px 0 5px;
+    float: left;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav_link:last-of-type {
+    margin-right: 10px;
+}
+
+.nav_link button {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: white;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.nav_link button:hover {
+    color: rgba(40, 125, 255, 0.85);
+    font-weight: 600;
+    border: 2px solid rgba(0,0,0,0.4);
+}
+
+.home-content {
+    width: 100%;
+    margin: auto;
+    max-width: 736px;
+}
+
+#recent-papers {
+    font-family: sans-serif;
+    margin-bottom: 0;
+    color: rgba(0,0,0,.55);
+    font-weight: 300;
+    padding-left: 40px;
+    font-size: 24px;
+}
+
+.home-content ol {
+    font-size: 20px;
+    margin-left: 0;
+    padding-right: 0;
+    list-style: none;
+    list-style-position: outside;
+}
+
+.index-li {
+    display: flex !important;
+    margin-bottom: 35px !important;
+    font-weight: 400;
+    max-width: 700px;
+    width: 100%;
+    height: 150px;
+    font-family: sans-serif !important;
+}
+
+.index-li:hover {
+    box-shadow: 0 25px 20px -20px #e9f2fa;  
+}
+
+.index-li-num {
+    line-height: 35px;
+    font-size: 34px;
+    color: rgba(0,0,0,.15);
+    height: 100%;
+}
+
+.index-li-text {
+    padding-left: 20px;
+    line-height: 20px;
+    min-width: 0;
+    display: inline-block;
+    max-width: 390px;
+    vertical-align: top;
+    margin-right: 10px;
+}
+
+.index-li-text h3 {
+    margin-top: 0;
+    display: flex;
+    color: black;
+    line-height: 30px;
+}
+
+.index-li-text p {
+    display: flex;
+    font-size: 18px;
+    color: rgba(0,0,0,.65);
+}
+
+.index-li-img {
+    text-align: right;
+    display: inline-block;
+}
+
+.index-li-img img {
+    display: flex;
+    width: 200px;
+    height: auto;
+}
+
+.index-li a {
+    text-decoration: None;
+}
+
+.paper-fp {
+    margin: 0 0 0 0;
+}
+
+.paper-fp h2 {
+    margin-bottom: 5px;
+}
+
+.paper-fp p {
+    margin: 2px auto 2px auto;
+}
+
+.link {
+    font-size: 14px;
+}
+
+.nondev {
+    width: 90%;
+    margin: auto;
+}
+
+.nondev h1 {
+    font-size: 39px;
+    font-family: sans-serif;
+}
+
+.nondev p,li {
+    font-family: serif;
+    font-size: 20px;
+    line-height: 25px;
+}
+
+.about-signature {
+    font-size: 18px !important; 
+    font-weight: bold;
+}
+
+.rules-page ol li {
+    margin-bottom: 10px;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.error-span, .warning-link {
+    color: red;
+}
+
+.admin-link, .publish-link {
+    color: green;
+}
+
+.accepted-invite {
+    color: green;
+    font-weight: bold;
+}
+
+.unaccepted-invite {
+    color: red;
+    font-weight: bold;
+}
+
+.neutral-link {
+    color: dodgerblue;
+}
+
+.paper_box {
+    min-width: 1100px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.paper_main {
+    max-width: 1400px;
+    width: 100%;
+}
+
+.fragments {
+    vertical-align: top;
+    min-width: 750px;
+    min-height: 50px;
+    max-width: 850px;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+.posts {
+    vertical-align: top;
+    text-align: center;
+    min-width: 400px;
+    max-width: 450px;
+    max-height: 95vh;
+    overflow: scroll;
+    display: inline-block;
+    border: 1px solid black;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
+
+#stick {
+    text-align: center;
+    min-width: 400px;
+    max-width: 500px;
+    display: inline-block;
+}
+
+.fragments .image {
+    cursor: pointer;
+    display: flex;
+}
+
+.fragments .image:hover {
+    background-color: rgb(223, 255, 192);
+}
+
+.fragments img {
+    width: 95%;
+    margin: 10px 0 10px auto;
+    border: 1px solid #d2d0d0;
+}
+
+#edit-post-form textarea {
+    width: 95%;
+    max-width: 600px;
+    height: 500px;
+}
+
+.post-count {
+    width: 3%;
+    height: 100%;
+    min-height: 50px;
+    text-align: center;
+}
+
+.comment-icon {
+    width: 8px;
+    height: auto;
+    margin-bottom: 0 !important;
+}
+
+.post-count p {
+    margin-top: 0;
+    font-size: 12px;
+}
+
+.posts h3 {
+    text-align: center;
+}
+
+.posts .new_post {
+    width: 95%;
+    margin: 0 auto 15px auto;
+}
+
+#form_fragment_label {
+    font-style: sans-serif;
+}
+
+.posts textarea {
+    width: 100%;
+    height: 100px;
+}
+
+.posts #submit {
+    margin-top: 5px;
+    padding: 7px;
+    background-color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid gray;
+    
+}
+
+.posts #submit:hover {
+    color: #1E90FF;
+}
+
+
+.posts .other_posts {
+    width: 90%;
+    display: inline-block;
+    height: 20%;
+    text-align: left;
+}
+
+.posts .prior-post {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid silver;
+}
+
+.prior-post .avatar-img {
+    width: 30px;
+    margin: auto 0;
+}
+
+.prior-post div {
+    display: inline-block;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.prior-post .post-name {
+    font-weight: bold;
+    margin: 7px auto auto 10px;
+    font-family: serif;
+}
+
+.prior-post .more-text {
+    display: none;
+}
+
+.prior-post .read-more {
+    display: inline;
+    background-color: white;
+    border: None;
+    color: #1E90FF;
+}
+
+.prior-post .read-more:hover {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.prior-post p {
+     white-space: pre-line;
+}
+
+.profile-header td {
+    padding-right: 20px;
+    vertical-align: middle;
+}
+
+.profile-header img {
+    border: 2px solid #69a88f;
+}
+
+#metrics-table {
+    border-collapse: collapse;
+}
+
+#metrics-table tr {
+    border-bottom: 1px solid black;
+}
+
+#metrics-table .metric-value {
+    padding-left: 20px;
+}
+
+.profile-page-post h5 {
+    margin-bottom: 5px;
+}
+
+.profile-page-post p {
+    margin: 5px auto;
+}
+
+.profile-post-time {
+    font-size: 12px;
+}
+
+.signup-form {
+    max-width: 500px;
+    text-align: left;
+    margin: auto;
+    font-size: 16px;
+}
+
+.signup-form label {
+    text-align: left;
+}
+
+.signup-form input {
+    max-width: 500px;
+    text-align: left;
+}
+
+.signup-form div label {
+    float: left;
+    max-width: 300px;
+}
+
+.signup-form div input {
+    float: right;
+}
+
+.signup-form .signup-notice {
+    color: #7878c1;
+}
+
+#signup-submit {
+    display: flex;
+    font-size: 18px;
+    padding: 5px 10px;
+    margin: 10px auto;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#signup-submit:hover {
+    color: rgb(57, 162, 9);
+    font-weight: 600;
+    border: 2px solid rgb(0,0,0);
+}
+
+.login-form {
+    max-width: 500px;
+    text-align: left;
+    margin: auto;
+    font-size: 16px;
+}
+
+.login-form label {
+    text-align: left;
+}
+
+.login-form input {
+    max-width: 500px;
+    text-align: left;
+}
+
+.login-form div label {
+    float: left;
+}
+
+.login-form div input {
+    float: right;
+}
+
+#login-submit {
+    display: flex;
+    font-size: 18px;
+    padding: 5px 10px;
+    margin: 10px auto;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#login-submit:hover {
+    font-weight: 600;
+    border: 2px solid rgb(100,100,100);
+}
+
+#loader {
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 414px) {
+    html, body {
+        min-width: 414px;
+    }
+    
+    #container {
+        width: 100%;
+    }
+    
+    header {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .big_logo {
+        max-width: 320px;
+        margin: auto;
+    }
+    
+    .big_logo h4 {
+        margin: 5px auto;
+    }
+    
+    .navs {
+        height: 40px;
+        display: block;
+        float: none;
+        margin-bottom: 5px;
+    }
+    
+    .nav_link {
+        float: none;
+        display: none;
+    }
+    
+    #about_nav, #rules_nav, #signup_nav {
+        display: inline-block;
+    }
+    
+    #index-ol {
+        margin: 0 auto;
+        padding: 0 10px;
+    }
+    
+    .index-li {
+        max-width: 94%;
+        display: block;
+    }
+    
+    .index-li-img {
+        padding-left: 20px;
+    }
+}

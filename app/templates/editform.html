@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="" method="post" id="edit-post-form">
+    {{form.hidden_tag()}}
+    {{form.csrf_token()}}
+    <p>{{form.content()}}
+    {% for error in form.content.errors %}
+    <span class="error-span">[{{error}}]</span>
+    {% endfor %}
+    </p>
+    <input name="post_id" type="hidden" value={{post_id}}>
+    <p>{{form.submit}}</p>
+    <br>
+    <p>{{form.delete}}</p>
+    <p class="warning-link">(Warning: clicking on this button will delete it instantly, without asking for confirmation!)</p>
+</form>
+
+{% endblock %}

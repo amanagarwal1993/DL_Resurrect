@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+
+<div class="home-content">
+    {% if papers %}
+        <h3 id="recent-papers">RECENTLY ADDED PAPERS</h3>
+        <div class="papers">
+        <br><br>
+        <ol id="index-ol">
+        {% for paper in papers %}
+            <li class="index-li">
+                <div class="index-li-num">
+                    {{ '%02d' % (loop.index)}}
+                </div>
+                <a href="{{url_for('full_paper', paper_id=paper[1])}}">
+                    <div class="index-li-text">
+                        <h3>{{ paper[0]|e }}</h3>
+                        <p><span>Published</span>: {{month_names[paper[2]-1]}} {{paper[3]}}</p>
+                    </div>
+                    <div class="index-li-img">
+                        <img src="{{paper[4]}}">
+                    </div>
+                </a>
+                
+            </li>
+        {% endfor %}
+        </ol>
+        <br>
+        {% if prev_page_url %}
+        <a href="{{prev_page_url}}">{{_('Newer Papers')}}</a>
+        {% endif %}
+
+        {% if next_page_url %}
+        <a href="{{next_page_url}}">{{_('Older Papers')}}</a>
+        {% endif %}
+    {% endif %}
+    </div>
+</div>    
+
+{% endblock %}

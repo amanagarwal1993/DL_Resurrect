@@ -1,0 +1,12 @@
+<div class="prior-post {{'para-' ~ fragment.id}}">
+            <a href="{{url_for('user', user_id=post.author.id)}}">
+            <div><img class="avatar-img" src="{{ post.author.avatar(64) }}"></div><div class="post-name"><span>{{post.author.name}}</span> added:</div>
+            </a>
+    
+    <p>{{post.body[:200]}}<span class="dots" id="dots-{{post.id}}">...</span><span class="more-text" id="moretext-{{post.id}}">{{post.body[200:]}}</span><button class="read-more" id="expand-{{post.id}}">Show more</button></p>
+    {% if current_user.is_authenticated %}
+    {% if current_user.id == post.user_id or current_user.admin_privilege %}
+        <a href="{{url_for('editform', user_id=post.author.id, post_id=post.id)}}" style="text-decoration: None; font-size: 14px; float: right">Edit/Delete</a>
+    {% endif %}
+    {% endif %}
+</div>

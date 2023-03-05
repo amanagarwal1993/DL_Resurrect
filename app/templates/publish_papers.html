@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{{url_for('new_paper')}}">Publish New Paper</a>
+
+<br><br>
+
+<form action="" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% for paper in papers %}
+        <p>
+            <a href="{{url_for('edit_paper', paper_id=paper.id)}}">{{paper.title}}</a>
+            {% if paper.published %}
+            <button type="submit" name="paper_id" value="{{paper.id}}" class="warning-link">Unpublish</button>
+            {% else %}
+            <button type="submit" name="paper_id" value="{{paper.id}}" class="publish-link">Publish</button>
+            {% endif %}
+        </p>
+    {% endfor %}
+</form>
+
+
+{% endblock %}

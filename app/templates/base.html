@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="robots" content="noindex">
+        <title>DenseLayers: {{ title }}</title>
+        <script nonce="{{ csp_nonce() }}" src="../static/js/jquery.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" src="../static/js/moment-with-locales.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" src="../static/js/flask_moment.js"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}"/>
+        <link rel="stylesheet" href="../static/css/style.css"/>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <div id="container">
+            <header>
+                <div class="big_logo">
+                    <a href="{{url_for('index')}}"><h1 id="top_logo">{{_('DenseLayers')}}</h1></a>
+                    <h4>Reading research papers should be fun.</h4>
+                </div>
+                <div class="navs">
+                    {% if current_user.is_authenticated and current_user.admin_privilege %}
+                    <a id="admin_nav" class="nav_link" href="{{url_for('admin_page')}}"><button>{{_('Admin Portal')}}</button></a>
+                    {% endif %}
+                    <a id="about_nav" class="nav_link" href="{{url_for('about_page')}}" target="_blank"><button>{{_('About')}}</button></a>
+                    <a id="rules_nav" class="nav_link" href="{{url_for('rules_page')}}" target="_blank"><button>{{_('Site Rules')}}</button></a>
+                    {% if current_user.is_anonymous %}
+                    <a id="login_nav" class="nav_link" href="{{url_for('login')}}"><button>{{_('Login')}}</button></a>
+                    <a id="signup_nav" class="nav_link nav_last" href="{{url_for('signup')}}"><button>{{_('Signup')}}</button></a>
+                    {% else %}
+                    <a id="profile_nav" class="nav_link" href="{{url_for('user', user_id=current_user.id)}}"><button>{{_('My profile')}}</button></a>
+                    <a id="logout_nav" class="nav_link nav_last" href="{{url_for('logout')}}" ><button>{{_('Logout')}}</button></a>
+                    {% endif %}
+                </div>
+            </header>
+            <hr id="header-ruler">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            
+            {% set month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %}
+        
+            {% block content %}
+            {% endblock %}
+            
+        </div>
+        
+    </body>
+    <script nonce="{{ csp_nonce() }}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script nonce="{{ csp_nonce() }}">window.jQuery || document.write('<script src="{{
+      url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+    <script nonce="{{ csp_nonce() }}" type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script nonce="{{ csp_nonce() }}" src="../static/js/app.js"></script>
+        
+
+</html>

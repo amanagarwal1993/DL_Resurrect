@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit Profile</h1>
+
+    <a href="{{url_for('user', user_id=current_user.id)}}" class="neutral-link">[Back to Profile]</a><br><br>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{form.csrf_token()}}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=100) }}<br>
+            {% for error in form.name.errors %}
+            <span class="error-span">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.about_me.label }}<br>
+            {{ form.about_me(cols=50, rows=4) }}<br>
+            {% for error in form.about_me.errors %}
+            <span class="error-span">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+<br>
+
+<p>Would you like to <a href="{{url_for('deletemyaccount')}}" class="warning-link">delete</a> your account instead?</p>
+
+{% endblock %}

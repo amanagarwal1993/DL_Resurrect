@@ -1,0 +1,10 @@
+User flag: {{flagged}}
+
+<title>DenseLayers: {{ title }}</title>
+
+<form action="" method="post">
+    {{form.hidden_tag()}}
+    {{form.csrf_token()}}
+    <input name="hehe" type="hidden">
+    {{form.submit}}
+</form>

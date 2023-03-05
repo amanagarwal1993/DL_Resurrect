@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+Paper: <a href="{{url_for('full_paper', paper_id=paper.id)}}">{{ paper.title|e }}</a>
+<br>
+ID: {{ paper.id }}
+<br>
+<br>
+
+<p>Make sure you create a folder named {{paper.id}} on S3.</p>
+
+<form method="POST" action="" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <label for="files">Select files:</label>
+    <input type="file" id="files" name="files" multiple><br><br>
+    <input type="submit">
+</form>
+<br>
+<br>
+<br>
+
+{% endblock %}

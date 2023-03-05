@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+
+<h3>Invite a friend</h3>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{form.csrf_token()}}
+    {{form.email.label}}
+    {{form.email(size=100)}}
+    {{form.submit()}}
+</form>
+
+{% endblock %}

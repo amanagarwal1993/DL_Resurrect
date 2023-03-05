@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.admin_privilege %}
+
+<h1>Admin Portal</h1>
+
+<h3>Key Metrics:</h3>
+<table id="metrics-table">
+<tr>
+    <td class="metric-name">Total Users</td>
+    <td class="metric-value">{{metrics['total_users']}}</td>
+</tr>
+<tr>
+    <td class="metric-name">Total Posts</td>
+    <td class="metric-value">{{metrics['total_posts']}}</td>
+</tr>
+    
+{% if metrics['total_papers'] %}
+<tr>
+    <td class="metric-name">Total Papers</td>
+    <td class="metric-value">{{metrics['total_papers']}}</td>
+</tr>
+<tr>
+    <td class="metric-name">Posts per paper</td>
+    <td class="metric-value">{{metrics['total_posts'] / metrics['total_papers'] * 1.0}}</td>
+</tr>
+<tr>
+    <td class="metric-name">Fragments per paper</td>
+    <td class="metric-value">{{metrics['total_fragments'] / metrics['total_papers'] * 1.0}}</td>
+</tr>
+{% else %}
+<tr>
+    <p>No papers yet.</p>
+</tr>
+{% endif %}
+<tr>
+    <td class="metric-name">% of visitors who posted</td>
+    <td class="metric-value">{{metrics['weekly_posters_count'] / metrics['weekly_active'] * 100.0}}</td>
+</tr>
+    
+</table>
+
+<br>
+
+<h4><a href="{{url_for('publish_papers')}}"><strong>Publish/Unpublish Papers</strong></a></h4>
+
+
+<h4><a href="{{url_for('invitation')}}"><strong>Invite New Users</strong></a></h4>
+
+<h3>Users lists</h3>
+
+<p>This Week's Contributors: {{metrics['weekly_posters']|length}}</p>
+<ol>
+{% for user in metrics['weekly_posters'] %}
+<li><a href="{{url_for('user', user_id=user.id)}}">{{user.name}}</a></li>
+{% endfor %}
+</ol>
+
+<p>Weekly Most Active Users: {{metrics['weekly_active_users']|length}}</p>
+<ol>
+{% for user in metrics['weekly_active_users'] %}
+<li><a href="{{url_for('user', user_id=user.id)}}">{{user.name}}</a></li>{% endfor %}
+</ol>
+
+<p>Spammers:</p>
+<ol>
+{% for user in metrics['spammers'] %}
+<li><a href="{{url_for('user', user_id=user.id)}}">{{user.name}}</a>: {{user.spammy}}</li>{% endfor %}
+</ol>
+
+{% else %}
+
+LOL nothing here actually.
+
+{% endif %}
+
+
+{% endblock %}

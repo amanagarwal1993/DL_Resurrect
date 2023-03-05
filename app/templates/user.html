@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <br>
+    {% if current_user.is_authenticated and current_user.admin_privilege %}
+    <a href="{{url_for('suspend_user', user_id=user.id)}}" class="warning-link">(Suspension)</a><br><br>
+    {% endif %}
+    
+    <a href="{{url_for('index')}}"><h3 id="top_logo">Go to homepage</h3></a><br><br>
+
+    <table>
+        <tr class="profile-header" valign="top">
+            <td><a href="{{user.gravatar()}}"><img src="{{ user.avatar(64) }}"></a></td>
+            <td>
+                <h3>{{ user.name }}</h3>
+                {% if current_user.is_authenticated or (current_user.admin_privilege or current_user.id==user.id) %}
+                <p>{{user.email}}</p>
+                {% endif %}
+            </td>
+            {% if user.last_seen %}
+    {% endif %}
+        </tr>
+    </table>
+
+    {% if user.flagged and (user.id==current_user.id or current_user.admin_privilege) %}
+    <h4 class="error-span">This account has been suspended. Please contact us to get it unsuspended.</h4>
+    {% endif %}
+
+    {% if current_user.email == user.email and current_user.name == user.name %}
+        <a href="{{url_for('edit_profile')}}">Edit Profile</a>
+        <br>
+    {% endif %}
+    
+    <br>
+    <p><b><strong>Last seen on:</strong></b> {{ moment(user.last_seen).format('LLL') }}</p>
+
+    {% if user.about_me %}
+        <div><p><b><strong>About Me:</strong></b> {{user.about_me}}</p></div>
+    {% endif %}
+
+    <p><b><strong>Invite a friend!</strong></b> <a href="{{url_for('invite_friend')}}">Use this form</a> :)</p>
+    
+    
+    <br>
+    {% if user.posts.all() %}
+    <h2>Posts</h2>
+        {% for post in user.posts %}
+            {% include "_post.html" %}
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

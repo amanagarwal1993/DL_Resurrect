@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Edit or Delete Paper</h3>
+
+<a href="{{url_for('full_paper', paper_id=paper_id)}}" class="return-page">[Back to Paper]</a><br><br>
+
+<a href="{{url_for('upload_fragments', paper_id=paper_id)}}" class="admin-link">[Upload Fragments]</a><br><br>
+
+
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{form.csrf_token()}}
+    
+    <div class="newpaper_form_section">
+        <p>{{form.title.label}}</p>
+        <p>{{form.title(size=140)}}</p>
+        {% for error in form.title.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+    </div>
+    
+    <div class="newpaper_form_section">
+        <p>{{form.journal.label}}</p>
+        <p>{{form.journal(size=100)}}</p>
+        {% for error in form.journal.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        
+        <p>{{form.scholar_link.label}}</p>
+        <p>{{form.scholar_link(size=200)}}</p>
+        {% for error in form.scholar_link.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        
+        <p>{{form.author_string.label}}</p>
+        <p>{{form.author_string(size=200)}}</p>
+        {% for error in form.author_string.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        
+        <p>{{form.publish_month.label}}</p>
+        <p>{{form.publish_month}}</p>
+        {% for error in form.publish_month.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        
+        <p>{{form.publish_year.label}}</p>
+        <p>{{form.publish_year}}</p>
+        {% for error in form.publish_year.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        
+        <p>{{form.shorthand.label}}</p>
+        <p>{{form.shorthand}}</p>
+        {% for error in form.shorthand.errors %}
+            <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        
+    </div>
+    
+    <p>{{form.submit}}</p>  
+
+    <h4>If you're deleting this paper, simply click "delete". Be careful.</h4>
+
+    <p>{{form.delete}}</p>
+    
+</form>
+
+
+{% endblock %}

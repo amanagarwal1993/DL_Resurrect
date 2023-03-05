@@ -1,0 +1,7 @@
+Hey - your friend {{friend}} has invited you to create an account for DenseLayers!
+
+DenseLayers is a tight online community where you can discuss some of the most cutting-edge research papers in AI, paragraph-by-paragraph, with other scholars around the world.
+
+Click here to sign up: https://denselayers.com/signup
+
+Super excited to welcome you to our community. We're also interested in your feedback, so don't hesitate to reply to this email or contact us in future!

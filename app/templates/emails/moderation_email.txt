@@ -1,0 +1,7 @@
+Hey, one of your posts on DenseLayers has been deleted for breaking community rules.
+
+Here's what you said:
+
+"{{ post.body }}"
+
+Please refrain from making such posts in future. Thank you.

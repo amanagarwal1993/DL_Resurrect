@@ -1,0 +1,5 @@
+<form method="POST" action="{{url_for('extinguish')}}" enctype="multipart/form-data">
+    {{form.csrf_token()}}
+    <input type="password" name="password" required>
+    <input type="submit">
+</form>

@@ -1,0 +1,17 @@
+<div class="fragments">
+    <h3>Paragraphs</h3>
+    <h5 class="neutral-link">(Clicking on a paragraph loads its unique discussion thread)</h5>
+    {% for fragment in paper.fragments %}
+    <div class="image" id="{{'fragment-' ~ fragment.id}}">
+        <img src="{{fragment.location()}}">
+        <div class="post-count">
+            {% if (fragment.posts|length > 0) %}
+                <img class="comment-icon">
+                <p>{{fragment.posts | length}}</p>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+    <br>
+    {% endfor %} 
+</div>

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="inner-container">
+<div class="paper_box">
+    <div class="paper_title">
+        <h1>{{paper.title}}</h1>
+    </div>
+    
+    <div class="paper_image">
+        <img id="paper_img" src="{{paper.img_url()}}">
+    </div>
+    <div class="link">
+        <p>Original Paper: <a href="{{paper.scholar_link}}" class="paper_link" target="_blank">{{paper.title}}</a></p>
+    </div>
+    <div class="paper_meta">
+        <p>Authors: <span>{{paper.author_string}}</span></p>
+    </div>
+    <div class="notes"></div>
+    
+    <div class="paper_main">
+        {% include "fragments_paper.html" %}
+        
+        <div class="posts">
+            <h3>Explanations</h3>
+            <div class="new_post">
+                <h5 id="form_fragment_label">Add your own post about this fragment!</h5>
+                <h5>Please refer to the <a href="{{url_for('rules_page')}}">Site Rules</a>.</h5>
+                {% if not current_user.is_authenticated %}
+                <h5 class="neutral-link">You'll need to login before being able to post.</h5>
+                {% endif %}
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    {{form.csrf_token()}}
+                    {{ form.content() }}
+                    {{ form.submit() }}
+                    <input id="form_fragment" name="fragment_id" type="hidden">
+                </form>
+                {% for error in form.content.errors %}
+                <span class="error-span">[{{error}}]</span>
+                {% endfor %}
+                {% for error in form.fragment_id.errors %}
+                <span class="error-span">[{{error}}]</span>
+                {% endfor %}
+            </div>
+            <div class="other_posts">
+            
+            {% for fragment in paper.fragments %}
+            {% for post in (fragment.posts)|sort(attribute="helpful") %}
+                {% include "_priorpost.html" %}
+            {% endfor %}
+            {% endfor %}
+                
+            </div>
+        </div>
+        <div id="stick"></div>
+        
+    </div>
+    
+    <div class="references">
+        <p>For references and cited articles, please visit the <a href="{{paper.scholar_link}}" class="paper_link" target="_blank">original publication</a>.</p>
+    </div>
+</div>
+</div>
+{% if first_fragment %}
+<script nonce="{{ csp_nonce() }}">
+    var comment_icon_url = "https://cdn.onlinewebfonts.com/svg/img_543833.png";
+    var first_fragment = {{first_fragment}};
+</script>
+{% else %}
+<script nonce="{{ csp_nonce() }}">
+    var comment_icon_url = "https://cdn.onlinewebfonts.com/svg/img_543833.png";
+    var first_fragment = 0;
+</script>
+{% endif %}
+
+{% endblock %}

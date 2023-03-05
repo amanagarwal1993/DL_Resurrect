@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.admin_privilege %}
+
+<br>
+<a href="{{url_for('admin_page')}}">Back to Admin</a>
+
+<br><br>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{form.csrf_token()}}
+    {{form.email.label}}
+    {{form.email(size=100)}}
+    {{form.submit()}}
+</form>
+
+<ol>
+{% for invite in prior_invites %}
+    {% if invite.accepted==1 %}
+    <li class="accepted-invite">{{invite.email}}  {{moment(invite.date_created).format('LLL')}}</li>
+    {% else %}
+    <li class="unaccepted-invite">{{invite.email}}  {{moment(invite.date_created).format('LLL')}}</li>
+    {% endif %}
+{% endfor %}
+</ol>
+
+{% endif %}
+{% endblock %}

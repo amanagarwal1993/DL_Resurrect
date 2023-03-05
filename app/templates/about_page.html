@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="nondev">
+
+    <br>
+    <h1>Why does this site exist?</h1>
+    
+    <p>In December, 1938 Germany, when Hitler's Nazi empire was at its peak before the war, a German chemist named Otto Hahn did an experiment with his assistant Fritz Strassman. They struck a Uranium atom with a neutron, and found that the reaction produced Barium. Oh that's neat, they thought.</p>
+    
+    <p>They wrote a paper describing the results and shared it with one of their friends, a Jewish physicist named Lise Meitner (a woman who had recently been persecuted by the Nazis and was on the run). She read the paper and discussed it with her nephew.</p>
+    
+    <p>As they read Hahn's paper, something stood out to them. They did some calculations... and realized that Hahn had performed the most terrifyingly powerful chemical reaction known to humanity at the time without even realizing it.</p>
+    
+    <p><em>He had split the atom</em> - discovering nuclear fission and launching the age of atomic weapons.</p>
+    
+    <p>They immediately shared this with other scientists, kicking off a chain of events that ultimately led to Albert Einstein sending a warning to President Roosevelt of the USA, who later announced the Manhattan Project.</p>
+    
+    <p>You should definitely read more about this exciting story, but one thing I want you to notice right now is the extent to which science and technology relies on good discussions around new research. The more people discuss new research and share ideas, the faster our world will progress.</p>
+
+    <p>Research papers today can be very hard to read. This painful sentiment is shared by surprisingly many people in the scientific community - from undergraduate students to Nobel laureate researchers. And that's not even counting the millions of scholars who do not use English as their first language.</p>
+    
+    <p>Moreover, reading a research paper is often a very lonely undertaking - you read it all by yourself and <em>then maybe</em> discuss it with other people. When you get stuck, it can take a lot of time and energy before things make sense. However, we believe <em>it can also be a highly collaborative exercise</em> - like a group of friends looking at a map, trying to make sense of it <em>together</em>.</p>
+    
+    <p>On DenseLayers, for <em>each</em> individual paragraph or figure in every paper, there is a unique discussion thread where you can share thoughts and explanations. This way, you can go deep into a paper and discuss its intricate details with hundreds or thousands of diverse people around the world.</p>
+    
+    <p>We invite you to join us, and we hope to build a kind, helpful and courageous community together.</p>
+    <br>
+    <br>
+    <p class="about-signature">My name is Aman, and I'm a developer at DenseLayers. You can contact me here and say hi: [<span id="obf"><script nonce="{{ csp_nonce() }}">document.getElementById("obf").innerHTML="<n uers=\"znvygb:nzna@qrafrynlref.pbz\" gnetrg=\"_oynax\">zbp.ferlnyrfarq@anzn</n>".replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);});document.body.appendChild(eo);</script>
+<noscript nonce="{{ csp_nonce() }}"><span style="unicode-bidi:bidi-override;direction:rtl;"></span></noscript></span>]
+</p>
+<p class="about-signature">Please read the <a href="{{url_for('rules_page')}}">Site Rules</a> too.</p>
+
+</section>
+
+{% endblock %}

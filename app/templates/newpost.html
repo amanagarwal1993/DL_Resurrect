@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <br>
+    <table>
+        <tr valign="top">
+            <td><img src="{{ current_user.avatar(64) }}"></td>
+            <td><h1>User: {{ current_user.username }}</h1></td>
+        </tr>
+    </table>
+    <br>
+
+    <h2>Create New Post!</h2>
+    <form action="" method="post">
+        {{form.hidden_tag()}}
+        {{form.csrf_token()}}
+        <p>{{form.content.label}}</p>
+        <p>{{form.content(size=140)}}
+        {% for error in form.content.errors %}
+        <span class="error-span">[{{error}}]</span>
+        {% endfor %}
+        </p>
+        <p>{{form.submit}}</p>
+    </form>
+
+{% endblock %}

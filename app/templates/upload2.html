@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<h3>Upload Fragments</h3> 
+<p>Title: <em><strong>{{paper.title}}</strong></em></p>
+<div class="paper_image">
+    <img id="paper_img" src="{{paper.img_url()}}">
+</div>
+<div class="link">
+    <p>Original Paper: <a href="{{paper.scholar_link}}" class="paper_link" target="_blank">{{paper.title}}</a></p>
+</div>
+<div class="paper_meta">
+    <p>Authors: <span>{{paper.author_string}}</span></p>
+</div>
+
+<br><br>
+
+<form method="POST" action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.files }}
+    {% for error in form.files.errors %}
+        <span style="color: red;">[{{error}}]</span>
+    {% endfor %}
+    <input type="submit" id="upload_fragments_button"> <div id="loader"></div>
+</form>
+
+<script>
+    $('#upload_fragments_button').on('click', function() {
+        $('#loader').show();
+    });
+</script>
+
+{% endblock %}
