@@ -18,6 +18,7 @@ from flask_sslify import SSLify
 
 flaskapp = Flask(__name__)
 flaskapp.config.from_object(Config)
+mail = Mail(flaskapp)
 
 db = SQLAlchemy(flaskapp)
 migrate = Migrate(flaskapp, db, compare_type=True)
@@ -50,6 +51,8 @@ login.login_message = _l("Please log in first.")
 
 #images = UploadSet('images', IMAGES)
 #configure_uploads(flaskapp, images)
+
+from app import routes, models
 
 
 @flaskapp.route('/')

@@ -5,7 +5,7 @@ from app.forms import LoginForm, SignupForm, EditProfileForm, NewPostForm, Passw
 from app.email import send_password_reset_email, send_moderation_email, send_invitation_email, invite_friend_email
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Invitation, Post, Paper, Fragment, Visits
-from werkzeug.urls import url_parse 
+from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
 from flask_babel import _
@@ -22,30 +22,46 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
         if current_user.spammy > 5:
-            flash("Your account has been suspended, so you cannot make any changes to the website. Contact elisa@denselayers.com for help.")
+            flash(
+                "Your account has been suspended, so you cannot make any changes to the website. Contact elisa@denselayers.com for help."
+            )
             return redirect(url_for('index'))
     pass
+
 
 @flaskapp.route('/about')
 def about_page():
     return render_template('about_page.html', title="About")
+
 
 @flaskapp.route('/rules')
 def rules_page():
     return render_template('rules_page.html', title="Rules")
 
 
-@flaskapp.route('/')
-@flaskapp.route('/index')
+#@flaskapp.route('/')
+#@flaskapp.route('/index')
 def index():
     page = request.args.get('page', 1, type=int)
-    
-    papers = Paper.query.with_entities(Paper.title, Paper.id, Paper.publish_month, Paper.publish_year, Paper.img_url(Paper)).filter(Paper.published, Paper.fragments).order_by(Paper.publish_year.desc(), Paper.publish_month.desc()).distinct().paginate(page, flaskapp.config['POSTS_PER_PAGE'], False)
-    
-    next_page_url = url_for('index', page=papers.next_num) if papers.has_next else None
-    prev_page_url = url_for('index', page=papers.prev_num) if papers.has_prev else None
-    
-    return render_template('index.html', title='Home', papers=papers.items, next_page_url=next_page_url, prev_page_url=prev_page_url)
+
+    papers = Paper.query.with_entities(
+        Paper.title, Paper.id, Paper.publish_month, Paper.publish_year,
+        Paper.img_url(Paper)).filter(
+            Paper.published, Paper.fragments).order_by(
+                Paper.publish_year.desc(),
+                Paper.publish_month.desc()).distinct().paginate(
+                    page, flaskapp.config['POSTS_PER_PAGE'], False)
+
+    next_page_url = url_for('index',
+                            page=papers.next_num) if papers.has_next else None
+    prev_page_url = url_for('index',
+                            page=papers.prev_num) if papers.has_prev else None
+
+    return render_template('index.html',
+                           title='Home',
+                           papers=papers.items,
+                           next_page_url=next_page_url,
+                           prev_page_url=prev_page_url)
 
 
 @flaskapp.route('/login', methods=['POST', 'GET'])
@@ -64,9 +80,9 @@ def login():
         flash('Welcome {}!'.format(user.name))
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
-        
+
         # Store new visit from user
-        visit = Visits(user_id = current_user.id)
+        visit = Visits(user_id=current_user.id)
         db.session.add(visit)
         db.session.commit()
         return redirect(next_page)
@@ -84,7 +100,9 @@ def signup():
         if (invite is not None or form.email.data == "aman@denselayers.com"):
             user = User.query.filter_by(email=form.email.data).first()
             if user is not None:
-                flash("This email (%s) already has a DenseLayers account! You can log in directly." % form.email.data)
+                flash(
+                    "This email (%s) already has a DenseLayers account! You can log in directly."
+                    % form.email.data)
                 return redirect(url_for('login'))
             user = User(name=form.name.data, email=form.email.data)
             user.set_password(form.password.data)
@@ -98,9 +116,14 @@ def signup():
             login_user(user)
             return redirect(url_for('index'))
         else:
-            flash("Sorry, at the moment we need you to have an invitation to join, to begin contributing your own posts. But you can still freely read papers and other people's posts on the website!")
-            flash("If you would like to join, please get an invitation by sending a short email to aman@denselayers.com with just a few words and we would love to welcome you to our community.")
+            flash(
+                "Sorry, at the moment we need you to have an invitation to join, to begin contributing your own posts. But you can still freely read papers and other people's posts on the website!"
+            )
+            flash(
+                "If you would like to join, please get an invitation by sending a short email to aman@denselayers.com with just a few words and we would love to welcome you to our community."
+            )
     return render_template('signup.html', title='Sign Up', form=form)
+
 
 @flaskapp.route('/logout')
 def logout():
@@ -108,7 +131,9 @@ def logout():
     flash('Logged out successfully')
     return redirect(url_for('login'))
 
+
 # For initial "forgot password" link
+
 
 @flaskapp.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
@@ -127,7 +152,9 @@ def reset_password():
             return redirect(url_for('reset_password'))
     return render_template('resetpwd.html', form=form, title="Reset Password")
 
+
 # After clicking the password reset link in email
+
 
 @flaskapp.route('/new_password/<token>', methods=['GET', 'POST'])
 def new_password(token):
@@ -142,7 +169,9 @@ def new_password(token):
         db.session.commit()
         flash('Your password has been reset')
         return redirect(url_for('login'))
-    return render_template('new_password.html', form=form, title="New Password")
+    return render_template('new_password.html',
+                           form=form,
+                           title="New Password")
 
 
 @flaskapp.route('/paper/<paper_id>', methods=['POST', 'GET'])
@@ -152,10 +181,10 @@ def full_paper(paper_id):
         abort(404)
         return redirect
     paper = Paper.query.filter_by(id=paper_id).first_or_404()
-    
+
     form = NewPostForm()
-    
-    if (request.method=="GET"):
+
+    if (request.method == "GET"):
         if current_user.is_authenticated:
             visit = Visits(visitor=current_user)
             paper.views += 1
@@ -163,54 +192,81 @@ def full_paper(paper_id):
             db.session.commit()
         if (paper.published):
             if (request.args.get('first_fragment')):
-                return render_template('full_paper.html', paper=paper, form=form, first_fragment=int(request.args.get('first_fragment')))    
-            return render_template('full_paper.html', paper=paper, form=form, title=paper.title)
+                return render_template('full_paper.html',
+                                       paper=paper,
+                                       form=form,
+                                       first_fragment=int(
+                                           request.args.get('first_fragment')))
+            return render_template('full_paper.html',
+                                   paper=paper,
+                                   form=form,
+                                   title=paper.title)
         else:
-            if (current_user.is_authenticated and current_user.admin_privilege):
+            if (current_user.is_authenticated
+                    and current_user.admin_privilege):
                 flash("This paper is closed off but you can view it.")
-                return render_template('full_paper.html', paper=paper, form=form, title=paper.title)
+                return render_template('full_paper.html',
+                                       paper=paper,
+                                       form=form,
+                                       title=paper.title)
             else:
                 flash("Sorry, this paper is not yet available.")
         return redirect(url_for('index'))
-    
-    if (request.method=="POST"):
+
+    if (request.method == "POST"):
         if (form.validate_on_submit()):
             if current_user.is_authenticated:
                 # Check if this is spammy or not
                 timediff = datetime.utcnow() - current_user.last_post_time
                 ### CORRECT THIS
                 if (timediff.seconds > 30):
-                    fragment = Fragment.query.filter_by(id=form.fragment_id.data).first()
-                    
-                    newpost = Post(body=form.content.data, 
-                                   author=current_user, 
-                                   fragment=fragment, 
+                    fragment = Fragment.query.filter_by(
+                        id=form.fragment_id.data).first()
+
+                    newpost = Post(body=form.content.data,
+                                   author=current_user,
+                                   fragment=fragment,
                                    timestamp_latest=datetime.utcnow())
-                    
+
                     current_user.last_post_time = datetime.utcnow()
                     db.session.add(newpost)
                     db.session.commit()
-                    
-                    print ("User ", current_user.id, " posted!")
-                    
+
+                    print("User ", current_user.id, " posted!")
+
                     form.content.data = ""
                     first_fragment = form.fragment_id.data
-                    return redirect(url_for('full_paper', paper_id=paper_id, first_fragment=first_fragment))
+                    return redirect(
+                        url_for('full_paper',
+                                paper_id=paper_id,
+                                first_fragment=first_fragment))
                     #return render_template('full_paper.html', paper=paper, form=form, first_fragment=first_fragment)
                 else:
-                    print ("Not posting for user ", current_user.id)
+                    print("Not posting for user ", current_user.id)
                     current_user.spammy += 1
                     current_user.last_post_time = datetime.utcnow()
                     db.session.commit()
-                    flash('You posted too quickly, slow down and wait a minute before you try to post again.')
-                    return render_template('full_paper.html', paper=paper, form=form, title=paper.title)
+                    flash(
+                        'You posted too quickly, slow down and wait a minute before you try to post again.'
+                    )
+                    return render_template('full_paper.html',
+                                           paper=paper,
+                                           form=form,
+                                           title=paper.title)
             else:
                 flash('You need to log in first!')
-                return redirect(url_for('login'), next_page=url_for('full_paper', paper_id))
+                return redirect(url_for('login'),
+                                next_page=url_for('full_paper', paper_id))
         else:
-            flash("Something went wrong. Try again and if it doesn't work, please email elisa@denselayers.com")
+            flash(
+                "Something went wrong. Try again and if it doesn't work, please email elisa@denselayers.com"
+            )
             return render_template('full_paper.html', paper=paper, form=form)
-    return render_template('full_paper.html', paper=paper, form=form, title=paper.title)
+    return render_template('full_paper.html',
+                           paper=paper,
+                           form=form,
+                           title=paper.title)
+
 
 def upload_file(data, file_name, folder_name, bucket):
     """Upload a file to an S3 bucket
@@ -223,18 +279,26 @@ def upload_file(data, file_name, folder_name, bucket):
     s3 = boto3.resource('s3')
     try:
         file_name = folder_name + '/' + file_name
-        s3.Bucket(bucket).put_object(Key=file_name, Body=data, ACL='public-read')
+        s3.Bucket(bucket).put_object(Key=file_name,
+                                     Body=data,
+                                     ACL='public-read')
     except ClientError as e:
         logging.error(e)
         return False
     return True
 
+
 def upload_paper(paper_file, image_file, folder, bucket='closed-papers'):
-    paper_uploaded = upload_file(paper_file.read(), secure_filename(paper_file.filename), folder, bucket)
-    image_uploaded = upload_file(image_file.read(), secure_filename(image_file.filename), folder, bucket)
+    paper_uploaded = upload_file(paper_file.read(),
+                                 secure_filename(paper_file.filename), folder,
+                                 bucket)
+    image_uploaded = upload_file(image_file.read(),
+                                 secure_filename(image_file.filename), folder,
+                                 bucket)
     if (paper_uploaded and image_uploaded):
         return True
     return False
+
 
 @flaskapp.route('/paper/new', methods=['GET', 'POST'])
 @login_required
@@ -245,30 +309,37 @@ def new_paper():
     """
     if current_user.admin_privilege:
         form = NewPaperForm()
-        
+
         if form.validate_on_submit():
-            print ("New paper form validated.")
+            print("New paper form validated.")
             paper_file = form.paper_file.data
             img_file = form.img_file.data
             if (upload_paper(paper_file, img_file, form.shorthand.data)):
-                print ("Files were able to upload.")
-                paper = Paper(title=form.title.data, 
-                          filename=secure_filename(paper_file.filename),
-                          folder=form.shorthand.data,
-                          journal=form.journal.data, 
-                          scholar_link=form.scholar_link.data, author_string=form.author_string.data, img_file=secure_filename(img_file.filename), publish_month=form.publish_month.data, publish_year=form.publish_year.data)
+                print("Files were able to upload.")
+                paper = Paper(title=form.title.data,
+                              filename=secure_filename(paper_file.filename),
+                              folder=form.shorthand.data,
+                              journal=form.journal.data,
+                              scholar_link=form.scholar_link.data,
+                              author_string=form.author_string.data,
+                              img_file=secure_filename(img_file.filename),
+                              publish_month=form.publish_month.data,
+                              publish_year=form.publish_year.data)
                 db.session.add(paper)
-                db.session.commit() 
-                print ("Created new paper.")
+                db.session.commit()
+                print("Created new paper.")
                 return redirect(url_for('upload_fragments', paper_id=paper.id))
             flash("Something went wrong. Could not store files.")
             return redirect(url_for('new_paper'))
         else:
-            print ("Form is not validating.")
-        return render_template('new_paper_form.html',form=form, title="New Paper")
+            print("Form is not validating.")
+        return render_template('new_paper_form.html',
+                               form=form,
+                               title="New Paper")
     else:
         flash("You are not authorized to access this page.")
     return redirect(url_for('index'))
+
 
 @flaskapp.route('/edit_paper/<paper_id>', methods=['POST', 'GET'])
 @login_required
@@ -281,23 +352,24 @@ def edit_paper(paper_id):
             form = EditPaperForm()
             if form.validate_on_submit():
                 if (form.delete.data):
-                    fragments = Fragment.query.filter_by(paper_id=paper_id).all()
+                    fragments = Fragment.query.filter_by(
+                        paper_id=paper_id).all()
                     for fragment in fragments:
                         db.session.delete(fragment)
                     db.session.delete(paper)
                     db.session.commit()
                     return redirect(url_for('index'))
                 else:
-                    paper.title=form.title.data
-                    paper.folder=form.shorthand.data
-                    paper.journal=form.journal.data
-                    paper.scholar_link=form.scholar_link.data
-                    paper.author_string=form.author_string.data
-                    paper.publish_month=form.publish_month.data
-                    paper.publish_year=form.publish_year.data
+                    paper.title = form.title.data
+                    paper.folder = form.shorthand.data
+                    paper.journal = form.journal.data
+                    paper.scholar_link = form.scholar_link.data
+                    paper.author_string = form.author_string.data
+                    paper.publish_month = form.publish_month.data
+                    paper.publish_year = form.publish_year.data
                     db.session.commit()
                     flash('Paper updated!')
-                    return redirect(url_for('full_paper', paper_id = paper_id))
+                    return redirect(url_for('full_paper', paper_id=paper_id))
             if request.method == "POST":
                 flash('Error submitting form.')
             form.title.data = paper.title
@@ -307,9 +379,12 @@ def edit_paper(paper_id):
             form.author_string.data = paper.author_string
             form.publish_month.data = paper.publish_month
             form.publish_year.data = paper.publish_year
-            return render_template('edit_paper.html', title='Edit Paper', form=form, paper_id=paper_id)
+            return render_template('edit_paper.html',
+                                   title='Edit Paper',
+                                   form=form,
+                                   paper_id=paper_id)
         else:
-            flash("No such paper.")    
+            flash("No such paper.")
             return redirect(url_for('index'))
     else:
         flash("You are not authorized to access this page.")
@@ -334,11 +409,12 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash('Profile updated!')
-        return redirect(url_for('user', user_id = current_user.id))
-    elif request.method=='GET':
+        return redirect(url_for('user', user_id=current_user.id))
+    elif request.method == 'GET':
         form.name.data = current_user.name
         form.about_me.data = current_user.about_me
     return render_template('editprofile.html', title='Edit Profile', form=form)
+
 
 @flaskapp.route('/suspend/<user_id>', methods=['GET', 'POST'])
 @login_required
@@ -358,12 +434,16 @@ def suspend_user(user_id):
                 db.session.commit()
                 flash("This user has been suspended.")
             return redirect(url_for('user', user_id=user_id))
-        if request.method=='GET':
-            return render_template('ban_user.html', form=form, user_id=user_id, flagged=user.flagged, title="Ban User")
+        if request.method == 'GET':
+            return render_template('ban_user.html',
+                                   form=form,
+                                   user_id=user_id,
+                                   flagged=user.flagged,
+                                   title="Ban User")
     else:
         flash("You are NOT authorized to access this page.")
     return redirect(url_for('index'))
-        
+
 
 @flaskapp.route('/deletemyaccount', methods=['POST', 'GET'])
 @login_required
@@ -374,8 +454,10 @@ def deletemyaccount():
             db.session.delete(current_user)
             db.session.commit()
         flash('Your account and all its history was successfully deleted.')
-    elif request.method=='GET':
-        return render_template('delete_user.html', title='Delete Account', form=form)
+    elif request.method == 'GET':
+        return render_template('delete_user.html',
+                               title='Delete Account',
+                               form=form)
     return redirect(url_for('index'))
 
 
@@ -383,12 +465,15 @@ def deletemyaccount():
 @login_required
 def invite_friend():
     form = InviteForm()
-    
+
     if (request.method == 'GET'):
-        return render_template('invite_friend.html', form=form, title="Invite Friend")
+        return render_template('invite_friend.html',
+                               form=form,
+                               title="Invite Friend")
 
     if form.validate_on_submit():
-        check_invite = Invitation.query.filter_by(email=form.email.data).first()
+        check_invite = Invitation.query.filter_by(
+            email=form.email.data).first()
         if (check_invite is None):
             new_invite = Invitation(email=form.email.data)
             db.session.add(new_invite)
@@ -400,6 +485,7 @@ def invite_friend():
             invite_friend_email(check_invite, current_user.name)
         return redirect(url_for('invite_friend'))
 
+
 @flaskapp.route('/editform/u/<user_id>/p/<post_id>', methods=['POST', 'GET'])
 @login_required
 def editform(user_id, post_id):
@@ -410,32 +496,39 @@ def editform(user_id, post_id):
     if not (current_user.id == int(user_id) or current_user.admin_privilege):
         flash("You can't edit someone else's post!")
         return redirect(url_for('full_paper', paper_id=paper_id))
-    
+
     editform = EditPostForm()
-    
-    if request.method=="GET":
+
+    if request.method == "GET":
         editform.content.data = post.body
-        return render_template('editform.html', form=editform, post_id=post_id, title="Edit Post")
-    
-    elif request.method=="POST":
+        return render_template('editform.html',
+                               form=editform,
+                               post_id=post_id,
+                               title="Edit Post")
+
+    elif request.method == "POST":
         if (editform.submit.data):
             if (current_user.id != int(user_id)):
-                flash("As an admin you can delete any post but only edit your own posts.")
+                flash(
+                    "As an admin you can delete any post but only edit your own posts."
+                )
             else:
                 post.body = editform.content.data
                 db.session.commit()
             return redirect(url_for('full_paper', paper_id=paper_id))
-        
+
         elif (editform.delete.data):
-            if (current_user.id != int(user_id) and current_user.admin_privilege):
+            if (current_user.id != int(user_id)
+                    and current_user.admin_privilege):
                 send_moderation_email(user, post)
             db.session.delete(post)
             db.session.commit()
             return redirect(url_for('full_paper', paper_id=paper_id))
-        
+
         #print ("Forms: ", editform.submit.data, "   ", editform.delete.data, " ", editform.content.data)
-        
+
     return render_template('editform.html', form=editform, post_id=post_id)
+
 
 @flaskapp.route('/admin')
 @login_required
@@ -448,31 +541,39 @@ def admin_page():
         # weekly active users
         # count users who were active this week as well as last week
         # these users' visits have a timestamp from "previous week".
-        
+
         right_now = datetime.utcnow()
         month_ago = right_now - timedelta(days=30)
         week_ago = right_now - timedelta(days=7)
         day_ago = right_now - timedelta(days=1)
-        
+
         metrics = dict()
-        
+
         metrics['total_users'] = User.query.count()
         metrics['total_posts'] = Post.query.count()
         metrics['total_papers'] = Paper.query.count()
         metrics['total_fragments'] = Fragment.query.count()
-        
-        metrics['weekly_active_users'] = User.query.filter(User.last_seen > week_ago).all()
-        metrics['weekly_active'] = User.query.filter(User.last_seen > week_ago).count()
-        
-        metrics['weekly_posters'] = User.query.filter(User.last_post_time > week_ago).all()
-        metrics['weekly_posters_count'] = User.query.filter(User.last_post_time > week_ago).count()
-        
-        metrics['spammers'] = User.query.filter(User.spammy > 2).order_by(User.spammy.desc()).all()
-        
-        return render_template("admin.html", metrics=metrics, title="Admin Portal")
-    
+
+        metrics['weekly_active_users'] = User.query.filter(
+            User.last_seen > week_ago).all()
+        metrics['weekly_active'] = User.query.filter(
+            User.last_seen > week_ago).count()
+
+        metrics['weekly_posters'] = User.query.filter(
+            User.last_post_time > week_ago).all()
+        metrics['weekly_posters_count'] = User.query.filter(
+            User.last_post_time > week_ago).count()
+
+        metrics['spammers'] = User.query.filter(User.spammy > 2).order_by(
+            User.spammy.desc()).all()
+
+        return render_template("admin.html",
+                               metrics=metrics,
+                               title="Admin Portal")
+
     flash("You are not authorized to access this page.")
     return redirect(url_for('index'))
+
 
 @flaskapp.route('/admin/papers', methods=['GET', 'POST'])
 @login_required
@@ -480,12 +581,14 @@ def publish_papers():
     if (current_user.admin_privilege):
         papers = Paper.query.all()
         if (request.method == 'GET'):
-            return render_template('publish_papers.html', papers = papers, title="Admin Papers")
-        
+            return render_template('publish_papers.html',
+                                   papers=papers,
+                                   title="Admin Papers")
+
         if (request.method == 'POST'):
             paper_id = int(request.form['paper_id'])
             paper = Paper.query.filter_by(id=paper_id).first()
-            if (paper.published==1):
+            if (paper.published == 1):
                 paper.published = 0
             else:
                 paper.published = 1
@@ -494,18 +597,24 @@ def publish_papers():
             return redirect(url_for('publish_papers'))
     return "Oopsie"
 
+
 @flaskapp.route('/admin/invites', methods=['GET', 'POST'])
 @login_required
 def invitation():
     if (current_user.admin_privilege):
         form = InviteForm()
-        invites = Invitation.query.order_by(Invitation.date_created.desc()).all()
+        invites = Invitation.query.order_by(
+            Invitation.date_created.desc()).all()
         if (request.method == 'GET'):
-            return render_template('invites.html', prior_invites = invites, form=form, title="Admin Invites")
-        
+            return render_template('invites.html',
+                                   prior_invites=invites,
+                                   form=form,
+                                   title="Admin Invites")
+
         if form.validate_on_submit():
-            
-            check_invite = Invitation.query.filter_by(email=form.email.data).first()
+
+            check_invite = Invitation.query.filter_by(
+                email=form.email.data).first()
             if (check_invite is None):
                 new_invite = Invitation(email=form.email.data)
                 db.session.add(new_invite)
@@ -518,6 +627,7 @@ def invitation():
             return redirect(url_for('invitation'))
     return "Oopsie"
 
+
 def upload_file(data, file_name, folder_name, bucket):
     """Upload a file to an S3 bucket
 
@@ -529,12 +639,15 @@ def upload_file(data, file_name, folder_name, bucket):
     s3 = boto3.resource('s3')
     try:
         file_name = folder_name + '/' + file_name
-        s3.Bucket(bucket).put_object(Key=file_name, Body=data, ACL='public-read')
+        s3.Bucket(bucket).put_object(Key=file_name,
+                                     Body=data,
+                                     ACL='public-read')
     except ClientError as e:
         logging.error(e)
         return False
     return True
-    
+
+
 @flaskapp.route('/p/<paper_id>/upload', methods=['POST', 'GET'])
 @login_required
 def upload_fragments(paper_id):
@@ -543,25 +656,35 @@ def upload_fragments(paper_id):
     if (current_user.admin_privilege):
         paper = Paper.query.filter_by(id=paper_id).first()
         form = FragmentsForm()
-        print (paper.id)
+        print(paper.id)
         if form.validate_on_submit():
             folder_name = paper.folder
             fragments_uploaded = False
             for image in form.files.data:
-                if (upload_file(image.read(), secure_filename(image.filename), folder_name, 'paper-fragments')):
+                if (upload_file(image.read(), secure_filename(image.filename),
+                                folder_name, 'paper-fragments')):
                     # create database entry
                     order = int(image.filename.split('.')[0])
-                    new_fragment = Fragment(order=order, paper=paper, file_name=secure_filename(image.filename), folder=folder_name)
+                    new_fragment = Fragment(order=order,
+                                            paper=paper,
+                                            file_name=secure_filename(
+                                                image.filename),
+                                            folder=folder_name)
                     db.session.add(new_fragment)
                     db.session.commit()
                     continue
                 else:
-                    flash("Upload failed for " + secure_filename(image.filename))
-                    return redirect(url_for('upload_fragments', paper_id=paper_id))
+                    flash("Upload failed for " +
+                          secure_filename(image.filename))
+                    return redirect(
+                        url_for('upload_fragments', paper_id=paper_id))
             flash("Uploads finished!")
             return redirect(url_for('full_paper', paper_id=paper_id))
         elif (request.method == "GET"):
-            return render_template('upload2.html', form=form, paper=paper, title="Upload Fragments")
+            return render_template('upload2.html',
+                                   form=form,
+                                   paper=paper,
+                                   title="Upload Fragments")
         flash('Error submitting form.')
         return redirect(url_for('upload_fragments', paper_id=paper_id))
     return redirect(url_for('index'))

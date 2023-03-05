@@ -173,6 +173,9 @@ header {
 .nondev {
     width: 90%;
     margin: auto;
+    padding: 0% 5%;
+    margin: 0 auto;
+    max-width: 500px;
 }
 
 .nondev h1 {
@@ -188,7 +191,6 @@ header {
 
 .about-signature {
     font-size: 18px !important; 
-    font-weight: bold;
 }
 
 .rules-page ol li {
