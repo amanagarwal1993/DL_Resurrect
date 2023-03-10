@@ -39,8 +39,8 @@ def rules_page():
     return render_template('rules_page.html', title="Rules")
 
 
-#@flaskapp.route('/')
-#@flaskapp.route('/index')
+@flaskapp.route('/')
+@flaskapp.route('/index')
 def index():
     page = request.args.get('page', 1, type=int)
 
@@ -50,7 +50,9 @@ def index():
             Paper.published, Paper.fragments).order_by(
                 Paper.publish_year.desc(),
                 Paper.publish_month.desc()).distinct().paginate(
-                    page, flaskapp.config['POSTS_PER_PAGE'], False)
+                    page=page,
+                    per_page=flaskapp.config['POSTS_PER_PAGE'],
+                    error_out=False)
 
     next_page_url = url_for('index',
                             page=papers.next_num) if papers.has_next else None

@@ -178,22 +178,36 @@ header {
     max-width: 500px;
 }
 
-.nondev h1 {
+h1.nondev {
     font-size: 39px;
     font-family: sans-serif;
 }
 
-.nondev p,li {
+p.nondev {
     font-family: serif;
     font-size: 20px;
     line-height: 25px;
+}
+
+.endorsements {
+    text-align: center !important;
+}
+
+.endorsements.endorsed img {
+    height: 100%;
+    max-width: 150px;
+}
+
+h4,p.endorsements.endorsed {
+    font-size: 15px;
+    font-style: italic;
 }
 
 .about-signature {
     font-size: 18px !important; 
 }
 
-.rules-page ol li {
+.nondev li {
     margin-bottom: 10px;
 }
 

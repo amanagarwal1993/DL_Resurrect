@@ -31,7 +31,7 @@ csp = {
     '\'self\'',
     'img-src': [
         '\'self\'', '*.amazonaws.com', '*.gravatar.com',
-        'cdn.onlinewebfonts.com'
+        'cdn.onlinewebfonts.com', 'upload.wikimedia.org'
     ],
     'script-src': [
         '\'self\'', 'ajax.googleapis.com', 'http://cdnjs.cloudflare.com',
@@ -53,8 +53,3 @@ login.login_message = _l("Please log in first.")
 #configure_uploads(flaskapp, images)
 
 from app import routes, models
-
-
-@flaskapp.route('/')
-def index():
-    return 'Hello from Flask!'
